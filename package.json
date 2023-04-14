@@ -1,21 +1,26 @@
 {
   "name": "buntan",
   "version": "1.0.0",
-  "description": "",
+  "description": "An in-memory semantic search database",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest",
+    "build": "tsc --project tsconfig.build.json"
   },
   "type": "module",
-  "keywords": [],
-  "author": "",
+  "keywords": ["memory", "database", "transformer", "onnx", "huggingface", "embedding", "vector"],
+  "author": "takoyaro",
   "license": "ISC",
   "dependencies": {
     "@xenova/transformers": "^1.4.2",
     "uuid": "^9.0.0"
   },
+  "optionalDependencies": {
+    "onnxruntime-node": "^1.14.0"
+  },
   "devDependencies": {
     "@types/node": "^18.15.11",
-    "@types/uuid": "latest"
+    "@types/uuid": "latest",
+    "vitest": "^0.30.1"
   }
 }

@@ -1,9 +1,6 @@
 {
-  "exclude": [
-    "./tests"
-  ],
   "include": [
-    "./src"
+    "./src/**/*",
   ],
   "files": [
     "./src/index.ts",
