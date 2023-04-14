@@ -19,7 +19,7 @@ To use Buntan in your project, you can import it like this:
 
 ### Initialization
 ```typescript
-import Buntan from 'buntan';
+import Buntan from '@takoyaro/buntan';
 
 // create a new database
 const database = new Buntan();

@@ -1,6 +1,6 @@
 {
-  "name": "buntan",
-  "version": "1.0.0",
+  "name": "@takoyaro/buntan",
+  "version": "1.1.0",
   "description": "An in-memory semantic search database using AI",
   "main": "dist/index.js",
   "scripts": {

@@ -50,7 +50,7 @@ class Buntan {
         return this.DB.get(name);
     }
 
-    public async insert(collection:string, data:string, metadata?:Record<any,any>):Promise<IDocument> {
+    public async insert_one(collection:string, data:string, metadata?:Record<any,any>):Promise<IDocument> {
         const vec = await this.embed_string(data);
         const doc = {
             _id: uuidv4(),
@@ -60,6 +60,20 @@ class Buntan {
         }
         this.create_or_get_collection(collection)?.push(doc);
         return doc;
+    }
+
+    public async insert_many(collection:string, docs:{data:string,metadata:Record<string,any>}[]):Promise<IDocument[]> {
+        const documents = await Promise.all(docs.map(async (doc) => {
+            const vec = await this.embed_string(doc.data);
+            return {
+                _id: uuidv4(),
+                embeddings: vec,
+                data: doc.data,
+                metadata: doc.metadata
+            }
+        }));     
+        this.create_or_get_collection(collection)?.push(...documents);
+        return documents;
     }
 
     public async query_similarity(collection:string, data:string, top:number = 10, normalize?:boolean) {
@@ -115,12 +129,20 @@ class Buntan {
         });
     }
 
-    public delete_by_id(collection:string, id:string) {
-        const docs = this.create_or_get_collection(collection);
+    public delete_one(collection:string, id:string) {
+        let docs = this.DB.get(collection);
         if (!docs) return null;
-        const idx = docs.findIndex((doc) => doc._id === id);
-        if (idx === -1) return null;
-        return docs.splice(idx,1)[0];
+        docs = docs.filter((doc) => doc._id !== id);
+        this.DB.set(collection, docs);
+        return this.DB.get(collection);
+    }
+
+    public delete_many(collection:string, ids:string[]) {
+        let docs = this.DB.get(collection);
+        if (!docs) return [];
+        docs = docs.filter((doc) => !ids.includes(doc._id));
+        this.DB.set(collection, docs);
+        return this.DB.get(collection);
     }
 
     public getMemoryUsage(unit?: "b" | "kb" | "mb" | "gb"): number {
