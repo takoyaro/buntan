@@ -1,7 +1,7 @@
 {
   "name": "buntan",
   "version": "1.0.0",
-  "description": "An in-memory semantic search database",
+  "description": "An in-memory semantic search database using AI",
   "main": "dist/index.js",
   "scripts": {
     "test": "vitest",
