@@ -9,9 +9,9 @@ Cross-platform support for Node.js and browser environments
 Lightweight and easy to use
 
 ## Installation
-To install MyLibrary, you can use npm:
+To install Buntan, you can use npm:
 ```bash
-pnpm add buntan
+pnpm add @takoyaro/buntan
 ```
 
 ## Usage
@@ -30,12 +30,12 @@ await database.init();
 ### Insert
 ```ts
 // add data to a collection with an optional metadata object.
-await database.insert('repos_collection',"Transformers.js - Run 🤗 Transformers in your browser! Supports a variety of tasks including: masked language modelling, text classification, token classification, zero-shot classification, text-to-text generation, translation, summarization, question answering, text generation, automatic speech recognition, image classification, zero-shot image classification, image-to-text, image segmentation, and object detection.",{
+await database.insert_one('repos_collection',"Transformers.js - Run 🤗 Transformers in your browser! Supports a variety of tasks including: masked language modelling, text classification, token classification, zero-shot classification, text-to-text generation, translation, summarization, question answering, text generation, automatic speech recognition, image classification, zero-shot image classification, image-to-text, image segmentation, and object detection.",{
     tags:['transformers','javascript','ai'],
     custom_property:"🤗"
 });
 
-await database.insert('repos_collection',"tokio - A runtime for writing reliable, asynchronous, and slim applications with the Rust programming language. It is: Fast: Tokio's zero-cost abstractions give you bare-metal performance.Reliable: Tokio leverages Rust's ownership, type system, and concurrency model to reduce bugs and ensure thread safety. Scalable: Tokio has a minimal footprint, and handles backpressure and cancellation naturally.",{
+await database.insert_one('repos_collection',"tokio - A runtime for writing reliable, asynchronous, and slim applications with the Rust programming language. It is: Fast: Tokio's zero-cost abstractions give you bare-metal performance.Reliable: Tokio leverages Rust's ownership, type system, and concurrency model to reduce bugs and ensure thread safety. Scalable: Tokio has a minimal footprint, and handles backpressure and cancellation naturally.",{
     tags:['rust','async'],
     another_custom_property:"Blazingly Fast!!!"
 });

@@ -1,5 +1,5 @@
 import { assert, expect, test, describe, it, beforeAll } from 'vitest'
-import Buntan from '../index.js';
+import Buntan, { IDocument, IEmbedding } from '../index.js';
 import { existsSync, mkdirSync, writeFileSync } from 'fs';
 import { download_model, model_exists } from './utils.js';
 
@@ -40,7 +40,7 @@ describe('Buntan', async () => {
         expect((doc.embeddings as IEmbedding).data).toBeInstanceOf(Float32Array);
     });
     it('Queryable for similar documents', async () => {
-        const result = await buntan.query_similarity('test', 'Hello world', 10);
+        const result = await buntan.query_similarity('test', 'Hello world');
         expect(result.length).toBe(1);
         expect(result[0].score).toBeGreaterThan(0);
     });
@@ -53,7 +53,7 @@ describe('Buntan', async () => {
         expect(docs.length).toBe(3);
     });
     it('Queryable for similar documents', async () => {
-        const result = await buntan.query_similarity('test', 'Hello world', 10);
+        const result = await buntan.query_similarity('test', 'Hello world');
         expect(result.length).toBe(3);
         expect(result[0].score).toBeGreaterThan(0);
     });

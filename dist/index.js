@@ -1,10 +1,10 @@
-import { v4 as uuidv4 } from 'uuid';
-import pkg from '@xenova/transformers';
+import { v4 as uuidv4 } from "uuid";
+import pkg from "@xenova/transformers";
 const { pipeline, env } = pkg;
 class Buntan {
     pipe = null;
     DB = new Map();
-    repo_name = 'rithwik-db/cleaned-e5-large-unsupervised-8';
+    repo_name = "rithwik-db/cleaned-e5-large-unsupervised-8";
     models_loaded = [];
     constructor(options = {}) {
         if (options?.remote == false) {
@@ -15,7 +15,8 @@ class Buntan {
             env.remoteURL = `https://huggingface.co/${options?.remote_url}/resolve/main/onnx/quantized/`;
         }
         else {
-            env.remoteURL = "https://huggingface.co/braintacles/onnx-models/resolve/main/onnx/quantized/";
+            env.remoteURL =
+                "https://huggingface.co/braintacles/onnx-models/resolve/main/onnx/quantized/";
         }
         if (options?.repo_name) {
             this.repo_name = options.repo_name;
@@ -26,16 +27,16 @@ class Buntan {
             this.pipe = [];
             for (const repo of this.repo_name) {
                 console.log(`Loading model from ${repo}`);
-                this.pipe.push(await pipeline('embeddings', repo));
+                this.pipe.push(await pipeline("embeddings", repo));
                 this.models_loaded.push(repo);
             }
-            console.log('Models loaded');
+            console.log("Models loaded");
         }
         else {
             console.log(`Loading model from ${this.repo_name}`);
-            this.pipe = await pipeline('embeddings', this.repo_name);
+            this.pipe = await pipeline("embeddings", this.repo_name);
             this.models_loaded.push(this.repo_name);
-            console.log('Model loaded');
+            console.log("Model loaded");
         }
         return this;
     }
@@ -51,7 +52,7 @@ class Buntan {
             _id: uuidv4(),
             embeddings: vec,
             data,
-            metadata
+            metadata,
         };
         this.create_or_get_collection(collection)?.push(doc);
         return doc;
@@ -63,32 +64,53 @@ class Buntan {
                 _id: uuidv4(),
                 embeddings: vec,
                 data: doc.data,
-                metadata: doc.metadata
+                metadata: doc.metadata,
             };
         }));
         this.create_or_get_collection(collection)?.push(...documents);
         return documents;
     }
-    async query_similarity(collection, data, top = 10, normalize) {
+    async query_similarity(collection, data, options = {}) {
         const vec = await this.embed_string(data);
-        const docs = this.create_or_get_collection(collection);
+        let docs = this.create_or_get_collection(collection);
         if (!docs) {
             return [];
         }
-        let results = docs.map((doc) => {
+        if (options?.filter) {
+            if (Object.keys(options.filter).length > 0) {
+                docs = docs.filter((doc) => {
+                    let metadata = doc.metadata;
+                    if (!metadata)
+                        return false;
+                    let keys = Object.keys(options.filter);
+                    for (const key of keys) {
+                        if (metadata[key] != options.filter[key]) {
+                            return false;
+                        }
+                    }
+                    return true;
+                });
+            }
+        }
+        let results = docs
+            .map((doc) => {
             return {
                 _id: doc._id,
                 score: this.calculate_score(doc.embeddings, vec),
                 data: doc.data,
-                metadata: doc.metadata
+                metadata: doc.metadata,
+                embeddings: doc.embeddings
             };
-        }).sort((a, b) => {
+        })
+            .sort((a, b) => {
             if (Array.isArray(a.score)) {
-                return b.score.reduce((acc, val) => acc + val, 0) - a.score.reduce((acc, val) => acc + val, 0);
+                return (b.score.reduce((acc, val) => acc + val, 0) -
+                    a.score.reduce((acc, val) => acc + val, 0));
             }
             return b.score - a.score;
-        }).slice(0, top);
-        if (normalize) {
+        })
+            .slice(0, options.top || 10);
+        if (options.normalize) {
             const max = results.at(0)?.score;
             const min = results.at(-1)?.score;
             const range = max - min;
@@ -96,12 +118,12 @@ class Buntan {
                 if (Array.isArray(x.score)) {
                     return {
                         ...x,
-                        score: x.score.map((y) => (y - min) / range)
+                        score: x.score.map((y) => (y - min) / range),
                     };
                 }
                 return {
                     ...x,
-                    score: x.score - min / range
+                    score: x.score - min / range,
                 };
             });
         }
@@ -139,7 +161,7 @@ class Buntan {
     }
     getMemoryUsage(unit) {
         // @ts-ignore
-        if (typeof window !== 'undefined') {
+        if (typeof window !== "undefined") {
             const jsonString = JSON.stringify([...this.DB]);
             const encoder = new TextEncoder();
             const db_byteLength = encoder.encode(jsonString).length;
@@ -214,5 +236,6 @@ class Buntan {
         return Math.sqrt(arr.reduce((acc, val) => acc + val * val, 0));
     }
 }
+export { Buntan };
 export default Buntan;
 //# sourceMappingURL=index.js.map

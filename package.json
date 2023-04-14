@@ -1,15 +1,23 @@
 {
   "name": "@takoyaro/buntan",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "An in-memory semantic search database using AI",
   "main": "dist/index.js",
   "scripts": {
     "test": "vitest",
     "build": "tsc --project tsconfig.build.json",
-    "prepublish": "pnpm test && pnpm build"
+    "prepublish": "npm test && npm build"
   },
   "type": "module",
-  "keywords": ["memory", "database", "transformer", "onnx", "huggingface", "embedding", "vector"],
+  "keywords": [
+    "memory",
+    "database",
+    "transformer",
+    "onnx",
+    "huggingface",
+    "embedding",
+    "vector"
+  ],
   "author": "takoyaro",
   "license": "ISC",
   "dependencies": {
