@@ -11,6 +11,7 @@ declare class Buntan {
         data: string;
         metadata: Record<string, any>;
     }[]): Promise<IDocument[]>;
+    load_collection(collection: string, docs: IDocument[]): Promise<IDocument[]>;
     query_similarity(collection: string, data: string, options?: {
         filter?: Record<string, any>;
         top?: number;
