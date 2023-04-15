@@ -1,6 +1,5 @@
-import { assert, expect, test, describe, it, beforeAll } from "vitest";
+import { expect, describe, it, beforeAll } from "vitest";
 import Buntan, { IDocument, IEmbedding } from "../index.js";
-import { existsSync, mkdirSync, writeFileSync } from "fs";
 import { download_model, model_exists } from "./utils.js";
 
 describe("Buntan", async () => {
