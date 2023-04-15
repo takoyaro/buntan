@@ -10,15 +10,16 @@ class Buntan {
 	public models_loaded: string[] = [];
 
 	constructor(options: IBuntanOptions = {}) {
+		env.remoteURL =
+			"https://huggingface.co/braintacles/onnx-models/resolve/main/onnx/quantized/";
 		if (options?.remote == false) {
-			env.localURL = options?.models_dir;
 			env.remoteModels = false;
+			if (options?.models_dir) {
+				env.localURL = options?.models_dir;
+			}
 		}
 		if (options?.remote_url) {
 			env.remoteURL = `https://huggingface.co/${options?.remote_url}/resolve/main/onnx/quantized/`;
-		} else {
-			env.remoteURL =
-				"https://huggingface.co/braintacles/onnx-models/resolve/main/onnx/quantized/";
 		}
 		if (options?.repo_name) {
 			this.repo_name = options.repo_name;
@@ -83,6 +84,24 @@ class Buntan {
 		);
 		this.create_or_get_collection(collection)?.push(...documents);
 		return documents;
+	}
+
+	//TODO: Add support for multiple models
+	public async load_collection(
+		collection: string,
+		docs: IDocument[]
+	): Promise<IDocument[]> {
+		docs = docs.map((doc) => {
+			return {
+				...doc,
+				embeddings: {
+					...doc.embeddings,
+					data: new Float32Array((doc.embeddings as IEmbedding).data),
+				},
+			};
+		});
+		this.DB.set(collection, docs);
+		return docs;
 	}
 
 	public async query_similarity(

@@ -1,12 +1,12 @@
 {
   "name": "@takoyaro/buntan",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "An in-memory semantic search database using AI",
   "main": "dist/index.js",
   "scripts": {
-    "test": "vitest",
+    "test": "vitest run",
     "build": "tsc --project tsconfig.build.json",
-    "prepublish": "npm test && npm build"
+    "prepublish": "npm run test && npm run build"
   },
   "type": "module",
   "keywords": [
