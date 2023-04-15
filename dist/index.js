@@ -4,7 +4,7 @@ const { pipeline, env } = pkg;
 class Buntan {
     pipe = null;
     DB = new Map();
-    repo_name = "rithwik-db/cleaned-e5-large-unsupervised-8";
+    repo_name = "headlesstech/semantic_xlmr";
     models_loaded = [];
     constructor(options = {}) {
         if (options?.remote == false) {
@@ -84,7 +84,8 @@ class Buntan {
                         return false;
                     let keys = Object.keys(options.filter);
                     for (const key of keys) {
-                        if (metadata[key] != options.filter[key]) {
+                        if (metadata[key] !=
+                            options.filter[key]) {
                             return false;
                         }
                     }
@@ -99,7 +100,7 @@ class Buntan {
                 score: this.calculate_score(doc.embeddings, vec),
                 data: doc.data,
                 metadata: doc.metadata,
-                embeddings: doc.embeddings
+                embeddings: doc.embeddings,
             };
         })
             .sort((a, b) => {

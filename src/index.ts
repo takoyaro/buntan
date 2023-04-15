@@ -6,8 +6,7 @@ const { pipeline, env } = pkg;
 class Buntan {
 	private pipe: any = null;
 	private DB: Map<string, IDocument[]> = new Map();
-	private repo_name: string | string[] =
-		"rithwik-db/cleaned-e5-large-unsupervised-8";
+	private repo_name: string | string[] = "headlesstech/semantic_xlmr";
 	public models_loaded: string[] = [];
 
 	constructor(options: IBuntanOptions = {}) {
@@ -89,32 +88,37 @@ class Buntan {
 	public async query_similarity(
 		collection: string,
 		data: string,
-        options:{
-            filter?: Record<string, any>,
-            top?: number,
-            normalize?: boolean
-        }={}
+		options: {
+			filter?: Record<string, any>;
+			top?: number;
+			normalize?: boolean;
+		} = {}
 	) {
 		const vec = await this.embed_string(data);
 		let docs = this.create_or_get_collection(collection);
 		if (!docs) {
 			return [];
 		}
-        if(options?.filter){
-            if (Object.keys(options.filter).length > 0) {
-                docs = docs.filter((doc) => {
-                    let metadata = doc.metadata;
-                    if (!metadata) return false;
-                    let keys = Object.keys(options.filter as Record<string, any>);
-                    for (const key of keys) {
-                        if (metadata[key] != (options.filter as Record<string,any>)[key]) {
-                            return false;
-                        }
-                    }
-                    return true;
-                });
-            }
-        }
+		if (options?.filter) {
+			if (Object.keys(options.filter).length > 0) {
+				docs = docs.filter((doc) => {
+					let metadata = doc.metadata;
+					if (!metadata) return false;
+					let keys = Object.keys(
+						options.filter as Record<string, any>
+					);
+					for (const key of keys) {
+						if (
+							metadata[key] !=
+							(options.filter as Record<string, any>)[key]
+						) {
+							return false;
+						}
+					}
+					return true;
+				});
+			}
+		}
 		let results = docs
 			.map((doc) => {
 				return {
@@ -122,7 +126,7 @@ class Buntan {
 					score: this.calculate_score(doc.embeddings, vec),
 					data: doc.data,
 					metadata: doc.metadata,
-					embeddings: doc.embeddings
+					embeddings: doc.embeddings,
 				};
 			})
 			.sort((a, b) => {
@@ -282,25 +286,25 @@ class Buntan {
 	}
 }
 
-interface IBuntanOptions{
-    remote?:boolean,
-    remote_url?:string,
-    repo_name?:string|string[],
-    models_dir?:string
+interface IBuntanOptions {
+	remote?: boolean;
+	remote_url?: string;
+	repo_name?: string | string[];
+	models_dir?: string;
 }
 interface IEmbedding {
-    dims: [number,number],
-    type: 'float32',
-    data: Float32Array,
-    size:number
+	dims: [number, number];
+	type: "float32";
+	data: Float32Array;
+	size: number;
 }
 interface IDocument {
-    _id:string,
-    embeddings:IEmbedding|IEmbedding[],
-    data:string,
-    metadata?:Record<any,any>
+	_id: string;
+	embeddings: IEmbedding | IEmbedding[];
+	data: string;
+	metadata?: Record<any, any>;
 }
-type TVecStr = [number,string]
+type TVecStr = [number, string];
 
-export {Buntan,IBuntanOptions,IDocument,IEmbedding,TVecStr}
+export { Buntan, IBuntanOptions, IDocument, IEmbedding, TVecStr };
 export default Buntan;

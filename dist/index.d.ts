@@ -42,7 +42,7 @@ interface IBuntanOptions {
 }
 interface IEmbedding {
     dims: [number, number];
-    type: 'float32';
+    type: "float32";
     data: Float32Array;
     size: number;
 }
