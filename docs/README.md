@@ -1,3 +1,5 @@
+@takoyaro/buntan / [Exports](modules.md)
+
 # Buntan - An in-memory semantic search database
 
 Buntan is an in-memory database designed to perform semantic searches.
@@ -88,4 +90,3 @@ console.log(results);
 
 # Contributing
 Contributions to Buntan are welcome!
-
