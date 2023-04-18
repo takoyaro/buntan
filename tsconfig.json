@@ -1,12 +1,12 @@
 {
-	"include": ["./src/**/*"],
-	"files": ["./src/index.ts", "./src/index.d.ts"],
+	"exclude": ["./playground.ts","dist","node_modules"],
+	"files": ["./src/index.ts"],
 	"compilerOptions": {
 		"target": "ESNext",
 		"lib": ["ESNext"],
 		"module": "esnext",
 		"rootDir": "./src",
-		"moduleResolution": "nodenext",
+		"moduleResolution": "node",
 		"baseUrl": "./",
 		"resolveJsonModule": true,
 		"allowJs": true,
@@ -17,7 +17,9 @@
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
 		"strict": true,
-		"skipLibCheck": true
+		"skipLibCheck": true,
+		"noUnusedParameters": true,
+		"noUnusedLocals": true,
 	},
 	"ts-node": {
 		"esm": true

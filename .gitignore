@@ -100,3 +100,4 @@ web_modules/
 .pnp.\*
 .DS_STORE
 models/*
+playground.ts
